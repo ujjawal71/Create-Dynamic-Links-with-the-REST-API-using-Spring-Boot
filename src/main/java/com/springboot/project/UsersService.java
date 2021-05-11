@@ -28,9 +28,9 @@ public class UsersService {
 	public String getsharelink() throws JSONException, UnsupportedEncodingException, IOException {
 		
 		//Need To change link
-        String api_key="AIzaSyDwmwm0DsojT3LoHvduWa8h_6ELqT_Afj0";
-        String dynamiclink="https://csecode.page.link/";
-        String Applink="https://play.google.com/store/apps/details?id=com.csecoder.ujjawalkumar.akusyllabus&hl=en_IN&gl=US";
+        String api_key="Your API";
+        String dynamiclink="https://example.page.link";
+        String Applink="https://www.example.com/&apn=com.example.android&ibi=com.example.ios";
         //
         
 		URL urllink = new URL(
