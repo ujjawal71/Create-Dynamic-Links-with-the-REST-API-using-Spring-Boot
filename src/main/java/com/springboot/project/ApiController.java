@@ -37,8 +37,19 @@ public class ApiController {
 
 	
 	
-	@RequestMapping(value = "/Sharelink/{id}", method = { RequestMethod.POST,  RequestMethod.GET })
-	public ShareModel getSharelink( @PathVariable("id") int id) throws RestClientException, UnsupportedEncodingException, JSONException, IOException
+	@RequestMapping(value = "/Sharelink/{id}", method = {   RequestMethod.GET })
+	public ShareModel getSharelink( @PathVariable("id") int id) 
+	{   
+
+		return this.shareService.getLink(id);
+			
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/Sharelink/", method = {  RequestMethod.GET })
+	public ShareModel addSharelink() throws RestClientException, UnsupportedEncodingException, JSONException, IOException
 	{   
 		 String sharelink=shareService.getsharelink();
 		  JSONObject jsonObject = new JSONObject("{\"longDynamicLink\":\"" + sharelink +"\"}");
@@ -51,8 +62,10 @@ public class ApiController {
 		//System.out.println(sharelink1);
 		//return sharelink1;
 		
-		return this.shareService.getLink(id);
+		return link;
 			
 		
 	}
+	
+	
 }

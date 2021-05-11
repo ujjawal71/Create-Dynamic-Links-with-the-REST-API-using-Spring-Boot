@@ -34,6 +34,7 @@ public class ShareService {
 		con.setDoOutput(true);
 
 		String jsonInputString = "{\"longDynamicLink\": \"https://example.page.link/?link=https://www.example.com/&apn=com.example.android&ibi=com.example.ios\"}";
+
 		try (OutputStream os = con.getOutputStream()) {
 			byte[] input = jsonInputString.getBytes("utf-8");
 			os.write(input, 0, input.length);
