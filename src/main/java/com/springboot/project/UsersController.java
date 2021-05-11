@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,42 +28,42 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-public class ApiController {
+public class UsersController {
 
 	@Autowired
 	private RestTemplate restTemplate;
 	
 	@Autowired
-	private ShareService shareService; 
+	private UsersService shareService; 
 
 	
 	
-	@RequestMapping(value = "/Sharelink/{id}", method = {   RequestMethod.GET })
-	public ShareModel getSharelink( @PathVariable("id") int id) 
+	@RequestMapping(value = "/UsersData/{id}", method = {   RequestMethod.GET })
+	public UsersModel getSharelink( @PathVariable("id") int id) 
 	{   
 
-		return this.shareService.getLink(id);
+		return this.shareService.getUserdData(id);
 			
 		
 	}
 	
 	
 	
-	@RequestMapping(value = "/Sharelink/", method = {  RequestMethod.GET })
-	public ShareModel addSharelink() throws RestClientException, UnsupportedEncodingException, JSONException, IOException
+	@RequestMapping(value = "/UsersData", method = {  RequestMethod.POST })
+	public UsersModel addSharelink(@RequestBody UsersModel usersModel) throws RestClientException, UnsupportedEncodingException, JSONException, IOException
 	{   
 		 String sharelink=shareService.getsharelink();
 		  JSONObject jsonObject = new JSONObject("{\"longDynamicLink\":\"" + sharelink +"\"}");
 		  ObjectMapper objectMapper = new ObjectMapper();
-		  ShareModel shareModel1 = objectMapper.readValue(jsonObject.toString(), ShareModel.class); 
-		  ShareModel link=this.shareService.addLink(shareModel1);
-		
+		  ShareModel shareModel = objectMapper.readValue(jsonObject.toString(), ShareModel.class); 
+
+		  UsersModel data=this.shareService.addUserdData(usersModel);
 		 
-		 // String sharelink1= restTemplate.getForObject(shareService.sharelink(),String.class);
-		//System.out.println(sharelink1);
-		//return sharelink1;
-		
-		return link;
+		  data.setShareModel(shareModel);
+		  this.shareService.addLink(data);
+		 
+	
+		return data;
 			
 		
 	}

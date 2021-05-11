@@ -1,6 +1,7 @@
 package com.springboot.project;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -17,29 +18,33 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 @Component
-public class ShareService {
+public class UsersService {
 
 	@Autowired
-	private LinkRepository linkRepository;
+	private UsersRepository linkRepository;
 
 	public String getsharelink() throws JSONException, UnsupportedEncodingException, IOException {
-
-		URL urllink = new URL ("https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=api_key");
-
+		
+		//Need To change link
+        String api_key="AIzaSyDwmwm0DsojT3LoHvduWa8h_6ELqT_Afj0";
+        String dynamiclink="https://csecode.page.link/";
+        String Applink="https://play.google.com/store/apps/details?id=com.csecoder.ujjawalkumar.akusyllabus&hl=en_IN&gl=US";
+        //
+        
+		URL urllink = new URL(
+				"https://firebasedynamiclinks.googleapis.com/v1/shortLinks/?key="+api_key+" ");
 		HttpURLConnection con = (HttpURLConnection) urllink.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Content-Type", "application/json; utf-8");
 		con.setRequestProperty("Accept", "application/json");
 		con.setDoOutput(true);
-
-		String jsonInputString = "{\"longDynamicLink\": \"https://example.page.link/?link=https://www.example.com/&apn=com.example.android&ibi=com.example.ios\"}";
-
+		String jsonInputString = "{\"longDynamicLink\": \""+dynamiclink+"?link="+Applink+ "\"}";
 		try (OutputStream os = con.getOutputStream()) {
 			byte[] input = jsonInputString.getBytes("utf-8");
 			os.write(input, 0, input.length);
 		}
-
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
 			StringBuilder response = new StringBuilder();
 			String responseLine = null;
@@ -49,22 +54,23 @@ public class ShareService {
 			System.out.println(response.toString());
 			JSONObject myResponse = new JSONObject(response.toString());
 			String urlsharelink = myResponse.getString("shortLink");
-
 			return urlsharelink;
 
 		}
 
 	}
 
-	// adding Link
-	public ShareModel addLink(ShareModel link) {
-		ShareModel result = linkRepository.save(link);
+	
+	
+	public UsersModel addUserdData(UsersModel usersModel) {
+		UsersModel result = linkRepository.save(usersModel);
 		return result;
 	}
+	
 
 	
-	public ShareModel getLink(int id) {
-		ShareModel sharelink1 = null;
+	public UsersModel getUserdData(int id) {
+		UsersModel sharelink1 = null;
 		try {
 			sharelink1 = this.linkRepository.findById(id);
 		} catch (Exception e) {
@@ -72,5 +78,13 @@ public class ShareService {
 		}
 		return sharelink1;
 	}
+
+	// adding Link
+		public UsersModel addLink(UsersModel usersModel) {
+			UsersModel result = linkRepository.save(usersModel);
+			return result;
+		}
+		
+
 
 }
